@@ -8,11 +8,18 @@ const mouse = {
   x: 0,
   y: 0
 };
-
 window.addEventListener('mousemove', (event) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
 });
+
+// Mobile Touch Tracking
+window.addEventListener('touchmove', (event) => {
+  const touch = event.touches[0]; 
+
+  mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+}, { passive: false }); 
 
 // Scene Setup
 const scene = new THREE.Scene();
