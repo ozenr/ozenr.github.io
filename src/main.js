@@ -3,6 +3,17 @@ import './style.css'
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
+// Track Mouse Position
+const mouse = {
+  x: 0,
+  y: 0
+};
+
+window.addEventListener('mousemove', (event) => {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
+});
+
 // Scene Setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -17,8 +28,18 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
+// Update Canvas Size Based on Window Changes
+window.addEventListener('resize', () => {
+  // Update Camera Size
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix;
+
+  // Update Render Size
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
 // Render Object
-const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
+const geometry = new THREE.BoxGeometry(3, 10, 2, 100);
 const material =
     new THREE.MeshBasicMaterial({color: 0xFF6347, wireframe: true});
 const torus = new THREE.Mesh(geometry, material);
@@ -27,10 +48,11 @@ scene.add(torus)
 
 function animate() {
   requestAnimationFrame(animate);
-  torus.rotation.x += 0.01
-  torus.rotation.y += 0.01
-  torus.rotation.z += 0.01
+  torus.rotation.y = -mouse.x
+  torus.rotation.x = mouse.y
+  // torus.rotation.z = (mouse.x + mouse.y) * 0.5
   renderer.render(scene, camera);
 }
 
+// Call Animation
 animate()
