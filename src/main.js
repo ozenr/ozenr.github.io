@@ -3,23 +3,69 @@ import './style.css'
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
-// Track Mouse Position
+// Store Mouse Position
 const mouse = {
-  x: 0,
-  y: 0
+  isDragging: false,
+  current: {x: 0, y: 0},
+  prev: {x: 0, y: 0},
+  delta_X: 0,
+  delta_Y: 0
 };
-window.addEventListener('mousemove', (event) => {
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
+
+// Mouse Tracking
+function handleStart(x, y) {
+  mouse.isDragging = true;
+  mouse.prev.x = x;
+  mouse.prev.y = y;
+}
+
+function rotatePack(x, y) {
+  if (mouse.isDragging) {
+    mouse.delta_X = x - mouse.prev.x;
+    mouse.delta_Y = y - mouse.prev.y;
+
+    mouse.current.x = x;
+    mouse.current.y = y;
+  } else {
+    return;
+  }
+}
+
+window.addEventListener('pointerdown', (e) => {
+  if (e.button === 0) handleStart(e.clientX, e.clientY);
 });
 
-// Mobile Touch Tracking
-window.addEventListener('touchmove', (event) => {
-  const touch = event.touches[0]; 
+window.addEventListener('pointermove', (e) => {
+  rotatePack(e.clientX, e.clientY);
+});
 
-  mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
-}, { passive: false }); 
+window.addEventListener('pointerup', () => {
+  mouse.isDragging = false;
+});
+// window.addEventListener('mousedown', (event) => {
+//   if (event.button === 0) {
+//     mouseDown = true;
+//   }
+// });
+
+// window.addEventListener('mouseup', () => {
+//   mouseDown = false;
+// });
+
+// window.addEventListener('mousemove', (event) => {
+//   if (mouseDown) {
+//     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//     mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
+//   }
+// });
+
+// // Mobile Touch Tracking
+// window.addEventListener('touchmove', (event) => {
+//   const touch = event.touches[0];
+
+//   mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+//   mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+// }, {passive: false});
 
 // Scene Setup
 const scene = new THREE.Scene();
@@ -55,8 +101,8 @@ scene.add(torus)
 
 function animate() {
   requestAnimationFrame(animate);
-  torus.rotation.y = -mouse.x
-  torus.rotation.x = mouse.y
+  torus.rotation.y = -(mouse.current.x / window.innerWidth) * 2 - 1;
+  torus.rotation.x = (mouse.current.y / window.innerHeight) * 2 + 1;
   // torus.rotation.z = (mouse.x + mouse.y) * 0.5
   renderer.render(scene, camera);
 }
