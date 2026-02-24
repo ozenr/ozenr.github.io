@@ -101,8 +101,10 @@ scene.add(torus)
 
 function animate() {
   requestAnimationFrame(animate);
-  torus.rotation.y = -(mouse.current.x / window.innerWidth) * 2 - 1;
-  torus.rotation.x = (mouse.current.y / window.innerHeight) * 2 + 1;
+  torus.rotation.y = mouse.delta_X * 0.005;
+  // torus.rotation.x = mouse.delta_Y * 0.005;
+  // torus.rotation.y = -(mouse.current.x / window.innerWidth) * 2 - 1;
+  // torus.rotation.x = (mouse.current.y / window.innerHeight) * 2 + 1;
   // torus.rotation.z = (mouse.x + mouse.y) * 0.5
   renderer.render(scene, camera);
 }
