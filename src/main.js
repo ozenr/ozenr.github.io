@@ -14,8 +14,10 @@ const pack = {
   sensitivity: 0.0005,
   target_rotation: 0,
   current_rotation: 0,
-  lerp: 0.1
+  lerp: 0.2
 };
+
+const pixelRatio = window.devicePixelRatio || 1;
 
 // Mouse Tracking
 function handleStart(x) {
@@ -25,7 +27,7 @@ function handleStart(x) {
 
 function rotatePack(x) {
   if (mouse.isDragging) {
-    mouse.delta_X = x - mouse.prev.x;
+    mouse.delta_X = (x - mouse.prev.x) / pixelRatio ;
     pack.target_rotation += delta_X * pack.sensitivity;
     mouse.prev.x = x;
   } else {
@@ -39,7 +41,7 @@ window.addEventListener('pointerdown', (e) => {
 
 window.addEventListener('pointermove', (e) => {
   rotatePack(e.clientX);
-});
+}, {passive: false});
 
 window.addEventListener('pointerup', () => {
   mouse.isDragging = false;
@@ -84,7 +86,8 @@ function animate() {
   if (Math.abs(mouse.delta_X) > 0.0001) {
     mouse.delta_X *= 0.95;
     pack.target_rotation += mouse.delta_X * pack.sensitivity;
-    pack.current_rotation += (pack.target_rotation - pack.current_rotation) * pack.lerp;
+    pack.current_rotation +=
+        (pack.target_rotation - pack.current_rotation) * pack.lerp;
     torus.rotation.y = pack.current_rotation;
   } else {
     mouse.delta_X = 0;
