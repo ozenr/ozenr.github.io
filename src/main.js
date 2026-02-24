@@ -6,66 +6,44 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 // Store Mouse Position
 const mouse = {
   isDragging: false,
-  current: {x: 0, y: 0},
-  prev: {x: 0, y: 0},
   delta_X: 0,
-  delta_Y: 0
+  prev: {x: 0}
+};
+
+const pack = {
+  sensitivity: 0.0005,
+  target_rotation: 0,
+  current_rotation: 0,
+  lerp: 0.1
 };
 
 // Mouse Tracking
-function handleStart(x, y) {
+function handleStart(x) {
   mouse.isDragging = true;
   mouse.prev.x = x;
-  mouse.prev.y = y;
 }
 
-function rotatePack(x, y) {
+function rotatePack(x) {
   if (mouse.isDragging) {
     mouse.delta_X = x - mouse.prev.x;
-    mouse.delta_Y = y - mouse.prev.y;
-
-    mouse.current.x = x;
-    mouse.current.y = y;
+    pack.target_rotation += delta_X * pack.sensitivity;
+    mouse.prev.x = x;
   } else {
     return;
   }
 }
 
 window.addEventListener('pointerdown', (e) => {
-  if (e.button === 0) handleStart(e.clientX, e.clientY);
+  if (e.button === 0) handleStart(e.clientX);
 });
 
 window.addEventListener('pointermove', (e) => {
-  rotatePack(e.clientX, e.clientY);
+  rotatePack(e.clientX);
 });
 
 window.addEventListener('pointerup', () => {
   mouse.isDragging = false;
 });
-// window.addEventListener('mousedown', (event) => {
-//   if (event.button === 0) {
-//     mouseDown = true;
-//   }
-// });
-
-// window.addEventListener('mouseup', () => {
-//   mouseDown = false;
-// });
-
-// window.addEventListener('mousemove', (event) => {
-//   if (mouseDown) {
-//     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-//     mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
-//   }
-// });
-
-// // Mobile Touch Tracking
-// window.addEventListener('touchmove', (event) => {
-//   const touch = event.touches[0];
-
-//   mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
-//   mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
-// }, {passive: false});
 
 // Scene Setup
 const scene = new THREE.Scene();
@@ -105,7 +83,9 @@ function animate() {
   // If We Haven't Slowed Down Enough
   if (Math.abs(mouse.delta_X) > 0.0001) {
     mouse.delta_X *= 0.95;
-    torus.rotation.y += mouse.delta_X * 0.0005;
+    pack.target_rotation += mouse.delta_X * pack.sensitivity;
+    pack.current_rotation += (pack.target_rotation - pack.current_rotation) * pack.lerp;
+    torus.rotation.y = pack.current_rotation;
   } else {
     mouse.delta_X = 0;
   }
