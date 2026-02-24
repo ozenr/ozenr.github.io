@@ -11,10 +11,10 @@ const mouse = {
 };
 
 const pack = {
-  sensitivity: 0.0005,
+  sensitivity: 0.0008,
   target_rotation: 0,
   current_rotation: 0,
-  lerp: 0.2
+  lerp: 0.1
 };
 
 const pixelRatio = window.devicePixelRatio || 1;
@@ -84,7 +84,7 @@ function animate() {
 
   // If We Haven't Slowed Down Enough
   if (Math.abs(mouse.delta_X) > 0.0001) {
-    mouse.delta_X *= 0.95;
+    mouse.delta_X *= 0.97;
     pack.target_rotation += mouse.delta_X * pack.sensitivity;
     pack.current_rotation +=
         (pack.target_rotation - pack.current_rotation) * pack.lerp;
