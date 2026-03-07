@@ -1,3 +1,8 @@
+/*Make Sure Deployed Page Follows Same Style Rules as Vite*/
+* {
+  box-sizing: border-box;
+}
+
 canvas {
   position: fixed;
   top: 0;
