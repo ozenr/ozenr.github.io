@@ -10,7 +10,7 @@ const mouse = {
 };
 
 const pack = {
-  sensitivity: 0.0008,
+  sensitivity: 0.0032,
   target_rotation: 0,
   current_rotation: 0,
   lerp: 0.1
