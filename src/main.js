@@ -123,7 +123,7 @@ function animate() {
     // If We Haven't Slowed Down Enough
     if (Math.abs(mouse.delta_X) > 0.0001) {
       // Movement Physics
-      mouse.delta_X *= 0.96;
+      mouse.delta_X *= 0.985;
       pack.target_rotation += mouse.delta_X * pack.sensitivity;
       pack.current_rotation +=
           (pack.target_rotation - pack.current_rotation) * pack.lerp;
