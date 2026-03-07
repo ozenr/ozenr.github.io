@@ -10,6 +10,11 @@ canvas {
   touch-action: none;
 }
 
+.button h1 {
+  margin: 0;
+  font-size: 1.2rem; 
+}
+
 .button {
   position: absolute;
   bottom: 5vh;
