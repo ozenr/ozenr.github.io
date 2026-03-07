@@ -1,7 +1,6 @@
 import './style.css'
 
 import * as THREE from 'three';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 // Store Mouse Position
 const mouse = {
@@ -27,7 +26,7 @@ function handleStart(x) {
 
 function rotatePack(x) {
   if (mouse.isDragging) {
-    mouse.delta_X = (x - mouse.prev.x) / pixelRatio ;
+    mouse.delta_X = (x - mouse.prev.x) / pixelRatio;
     pack.target_rotation += delta_X * pack.sensitivity;
     mouse.prev.x = x;
   } else {
@@ -45,6 +44,13 @@ window.addEventListener('pointermove', (e) => {
 
 window.addEventListener('pointerup', () => {
   mouse.isDragging = false;
+});
+
+// Button Listener
+const openBtn = document.querySelector('.button');
+
+openBtn.addEventListener('click', () => {
+  console.log('Works');
 });
 
 // Scene Setup

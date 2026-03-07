@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+# Build Site
+npm run build
+
+# Run Site
+npm run preview
