@@ -27,20 +27,21 @@ function handleStart(x) {
 function rotatePack(x) {
   if (mouse.isDragging) {
     mouse.delta_X = (x - mouse.prev.x) / pixelRatio;
-    pack.target_rotation += delta_X * pack.sensitivity;
+    pack.target_rotation += mouse.delta_X * pack.sensitivity;
     mouse.prev.x = x;
   } else {
     return;
   }
 }
 
+function handleMovement(e) {
+  rotatePack(e.clientX);
+}
 window.addEventListener('pointerdown', (e) => {
   if (e.button === 0) handleStart(e.clientX);
 });
 
-window.addEventListener('pointermove', (e) => {
-  rotatePack(e.clientX);
-}, {passive: false});
+window.addEventListener('pointermove', handleMovement, {passive: false});
 
 window.addEventListener('pointerup', () => {
   mouse.isDragging = false;
@@ -48,9 +49,10 @@ window.addEventListener('pointerup', () => {
 
 // Button Listener
 const openBtn = document.querySelector('.button');
-
+let openPressed = false;
 openBtn.addEventListener('click', () => {
-  console.log('Works');
+  openBtn.style.display = 'none';
+  openPressed = true;
 });
 
 // Scene Setup
@@ -88,15 +90,32 @@ scene.add(torus)
 function animate() {
   requestAnimationFrame(animate);
 
-  // If We Haven't Slowed Down Enough
-  if (Math.abs(mouse.delta_X) > 0.0001) {
-    mouse.delta_X *= 0.97;
-    pack.target_rotation += mouse.delta_X * pack.sensitivity;
-    pack.current_rotation +=
-        (pack.target_rotation - pack.current_rotation) * pack.lerp;
-    torus.rotation.y = pack.current_rotation;
+  // Change Pack State if Open Button is Pressed
+  if (openPressed) {
+    console.log('Current Rotation: ', torus.rotation.y);
+
+    // Zoom in On Pack
+    camera.position.setZ(15);
+    window.removeEventListener('pointermove', handleMovement);
+
+    // Rotate Pack Back To Default Position
+    torus.rotation.y *= 0.9;
+    if (Math.abs(torus.rotation.y) < 0.001) {
+      torus.rotation.y = 0;
+    }
   } else {
-    mouse.delta_X = 0;
+    // If We Haven't Slowed Down Enough
+    if (Math.abs(mouse.delta_X) > 0.0001) {
+      // Movement Physics
+      mouse.delta_X *= 0.97;
+      pack.target_rotation += mouse.delta_X * pack.sensitivity;
+      pack.current_rotation +=
+          (pack.target_rotation - pack.current_rotation) * pack.lerp;
+      torus.rotation.y = pack.current_rotation;
+      console.log(torus.rotation.y);
+    } else {
+      mouse.delta_X = 0;
+    }
   }
   renderer.render(scene, camera);
 }
