@@ -47,13 +47,27 @@ window.addEventListener('pointerup', () => {
   mouse.isDragging = false;
 });
 
-// Button Listener
-const openBtn = document.querySelector('.button');
+// Initialize Buttons
+const openBtn = document.querySelector('#open');
+const closeBtn = document.querySelector('#close');
 let openPressed = false;
+
+// Button Listeners
 openBtn.addEventListener('click', () => {
   openBtn.style.display = 'none';
   openPressed = true;
+
+  closeBtn.style.display = 'block';
 });
+
+closeBtn.addEventListener('click', () => {
+  closeBtn.style.display = 'none';
+  openPressed = false;
+
+  openBtn.style.display = 'block';
+  window.addEventListener('pointermove', handleMovement, {passive: false});
+  camera.position.setZ(30); // reset camera position
+})
 
 // Scene Setup
 const scene = new THREE.Scene();
@@ -65,7 +79,7 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.setZ(30);
+camera.position.setZ(30);  // initial position
 
 renderer.render(scene, camera);
 
@@ -102,17 +116,19 @@ function animate() {
     torus.rotation.y *= 0.9;
     if (Math.abs(torus.rotation.y) < 0.001) {
       torus.rotation.y = 0;
+      pack.current_rotation = 0;
+      pack.target_rotation = 0;
     }
   } else {
     // If We Haven't Slowed Down Enough
     if (Math.abs(mouse.delta_X) > 0.0001) {
       // Movement Physics
-      mouse.delta_X *= 0.97;
+      mouse.delta_X *= 0.96;
       pack.target_rotation += mouse.delta_X * pack.sensitivity;
       pack.current_rotation +=
           (pack.target_rotation - pack.current_rotation) * pack.lerp;
       torus.rotation.y = pack.current_rotation;
-      console.log(torus.rotation.y);
+
     } else {
       mouse.delta_X = 0;
     }
