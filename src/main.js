@@ -54,16 +54,24 @@ const openBtn = document.querySelector('#open');
 const closeBtn = document.querySelector('#close');
 let openPressed = false;
 
+// Initialize Slider
+const flash = document.getElementById('flash');
+const slider = document.querySelector('.slider-container');
+var value = document.getElementById('range');
+
 // Button Listeners
 openBtn.addEventListener('click', () => {
   openBtn.style.display = 'none';
   openPressed = true;
 
+  // reset original slider value
+  value.value = 50;
   closeBtn.style.display = 'block';
 });
 
 closeBtn.addEventListener('click', () => {
   closeBtn.style.display = 'none';
+  slider.style.display = 'none';
   openPressed = false;
 
   openBtn.style.display = 'block';
@@ -105,7 +113,6 @@ loader.load('/TCGP.glb', function(glb) {
   packModel.rotation.y = defaultOrientation;
 
   scene.add(packModel);
-  // renderer.render(scene, camera);
 });
 
 // Add Light
@@ -131,6 +138,9 @@ function animate() {
       packModel.rotation.y = defaultOrientation;
       pack.current_rotation = defaultOrientation;
       pack.target_rotation = defaultOrientation;
+      slider.style.display = 'block';  // display slider after pack resets
+
+      
     }
   } else {
     // If We Haven't Slowed Down Enough
