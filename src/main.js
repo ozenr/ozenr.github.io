@@ -10,10 +10,11 @@ const mouse = {
   prev: {x: 0}
 };
 
+const defaultOrientation = -Math.PI / 2;
 const pack = {
   sensitivity: 0.0032,
-  target_rotation: -Math.PI / 2,
-  current_rotation: -Math.PI / 2,
+  target_rotation: defaultOrientation,
+  current_rotation: defaultOrientation,
   lerp: 0.1
 };
 
@@ -97,7 +98,6 @@ window.addEventListener('resize', () => {
 
 // Load Pack
 let packModel;
-const defaultOrientation = -Math.PI / 2;
 const loader = new GLTFLoader();
 loader.load('/TCGP.glb', function(glb) {
   packModel = glb.scene;
@@ -109,8 +109,8 @@ loader.load('/TCGP.glb', function(glb) {
 });
 
 // Add Light
-const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(2, 2, 5);
+const light = new THREE.DirectionalLight(0xffffff, 2.5);
+light.position.set(2, 3, 5);
 scene.add(light);
 
 function animate() {
