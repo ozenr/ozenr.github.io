@@ -1,6 +1,7 @@
 import './style.css'
 
 import * as THREE from 'three';
+import {GLTFLoader} from 'three/examples/jsm/Addons.js';
 
 // Store Mouse Position
 const mouse = {
@@ -11,8 +12,8 @@ const mouse = {
 
 const pack = {
   sensitivity: 0.0032,
-  target_rotation: 0,
-  current_rotation: 0,
+  target_rotation: -Math.PI / 2,
+  current_rotation: -Math.PI / 2,
   lerp: 0.1
 };
 
@@ -66,10 +67,10 @@ closeBtn.addEventListener('click', () => {
 
   openBtn.style.display = 'block';
   window.addEventListener('pointermove', handleMovement, {passive: false});
-  camera.position.setZ(30); // reset camera position
+  camera.position.setZ(30);  // reset camera position
 })
 
-// Scene Setup
+// ------------------------Scene Setup------------------------
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
     90, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -79,6 +80,7 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 camera.position.setZ(30);  // initial position
 
 renderer.render(scene, camera);
@@ -93,31 +95,42 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Render Object
-const geometry = new THREE.BoxGeometry(3, 10, 2, 100);
-const material =
-    new THREE.MeshBasicMaterial({color: 0xFF6347, wireframe: true});
-const torus = new THREE.Mesh(geometry, material);
+// Load Pack
+let packModel;
+const defaultOrientation = -Math.PI / 2;
+const loader = new GLTFLoader();
+loader.load('/TCGP.glb', function(glb) {
+  packModel = glb.scene;
+  packModel.scale.set(6, 6, 6);
+  packModel.rotation.y = defaultOrientation;
 
-scene.add(torus)
+  scene.add(packModel);
+  // renderer.render(scene, camera);
+});
+
+// Add Light
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(2, 2, 5);
+scene.add(light);
 
 function animate() {
   requestAnimationFrame(animate);
 
   // Change Pack State if Open Button is Pressed
   if (openPressed) {
-    console.log('Current Rotation: ', torus.rotation.y);
-
     // Zoom in On Pack
-    camera.position.setZ(15);
+    camera.position.setZ(20);
     window.removeEventListener('pointermove', handleMovement);
 
     // Rotate Pack Back To Default Position
-    torus.rotation.y *= 0.9;
-    if (Math.abs(torus.rotation.y) < 0.001) {
-      torus.rotation.y = 0;
-      pack.current_rotation = 0;
-      pack.target_rotation = 0;
+    const diff = defaultOrientation - packModel.rotation.y;
+
+    if (Math.abs(diff) > 0.0001) {
+      packModel.rotation.y += diff * 0.1;
+    } else {
+      packModel.rotation.y = defaultOrientation;
+      pack.current_rotation = defaultOrientation;
+      pack.target_rotation = defaultOrientation;
     }
   } else {
     // If We Haven't Slowed Down Enough
@@ -127,7 +140,7 @@ function animate() {
       pack.target_rotation += mouse.delta_X * pack.sensitivity;
       pack.current_rotation +=
           (pack.target_rotation - pack.current_rotation) * pack.lerp;
-      torus.rotation.y = pack.current_rotation;
+      packModel.rotation.y = pack.current_rotation;
 
     } else {
       mouse.delta_X = 0;
