@@ -3,6 +3,13 @@ import './style.css'
 const rightBtn = document.querySelector('.swipe-right');
 const leftBtn = document.querySelector('.swipe-left');
 const cards = document.querySelectorAll('.cards img');
+const song = document.querySelector('.song');
+
+// Autoplay Music
+// This will work on mobile because it's inside a click event
+window.addEventListener('click', () => {
+    song.play(); 
+}, { once: true });
 
 // Button Press
 let i = 0;
