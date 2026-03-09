@@ -199,7 +199,7 @@ canvas {
 
 #message {
   position: fixed;
-  width: 70vw;
+  width: 40vw;
   text-align: left;
   z-index: 1001; 
   pointer-events: none;
