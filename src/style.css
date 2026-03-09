@@ -199,23 +199,27 @@ canvas {
 
 #message {
   position: fixed;
+  width: 70vw;
+  text-align: left;
   z-index: 1001; 
   pointer-events: none;
   opacity: 0;    
   font-weight: bold;
   color: #fff;
-  font-size: 48px;
+  font-size: 1.2rem;
   font-family: "Courier New"; 
-  width: 40vw;
 }
 
 #flower {
   position: fixed;
   pointer-events: none;
   z-index: 1001; 
-  opacity: 0;    
-  left: 80dvw;
-  top: 20dvh;
+  opacity: 0;  
+  bottom: 5dvh;
+  right: 5vw;
+  width: 35vw;
+  max-width: 400px;  
+  height: auto;
 }
 
 #darken.active {
