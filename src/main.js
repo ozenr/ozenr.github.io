@@ -74,20 +74,6 @@ closeBtn.addEventListener('click', () => {
   camera.position.setZ(30);  // reset camera position
 })
 
-// Slider Logic 
-const flash = document.getElementById('flash');
-const slider = document.querySelector('.slider-container');
-var value = document.getElementById('range');
-
-value.oninput = function() {
-  console.log(this.value)
-  if (Number(this.value) === 100) {
-    // Queue Flash Effect
-    flash.classList.add('active');
-
-    // Unrender Everything
-  }
-}
 // ------------------------Scene Setup------------------------
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -129,8 +115,25 @@ const light = new THREE.DirectionalLight(0xffffff, 2.5);
 light.position.set(2, 3, 5);
 scene.add(light);
 
+// Slider Logic
+const flash = document.getElementById('flash');
+const slider = document.querySelector('.slider-container');
+var value = document.getElementById('range');
+
+let id;
+value.oninput =
+    function() {
+  if (Number(this.value) === 100) {
+    // Queue Flash Effect
+    flash.classList.add('active');
+
+    // Switch To Collection Pages
+    setTimeout(() => {window.location.href = './cards.html'}, 3000);
+  }
+}
+
 function animate() {
-  requestAnimationFrame(animate);
+  id = requestAnimationFrame(animate);
 
   // Change Pack State if Open Button is Pressed
   if (openPressed) {
