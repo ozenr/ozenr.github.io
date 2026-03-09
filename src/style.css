@@ -117,7 +117,7 @@ canvas {
 
 /* CARDS PAGE */
 .cards img {
-  position: absolute;
+  position: relative;
   pointer-events: none;
   display: none;
   opacity: 0;
