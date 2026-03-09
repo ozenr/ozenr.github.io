@@ -1,20 +1,22 @@
-/*Make Sure Deployed Page Follows Same Style Rules as Vite*/
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-/* SCENE AND PACK BUTTONS */
+body {
+  background-color: white;
+  overflow: hidden; 
+  height: 100dvh;
+}
 
+/* SCENE AND PACK BUTTONS */
 canvas {
   position: fixed;
   top: 0;
   left: 0;
   touch-action: none;
-}
-
-.button h1 {
-  margin: 0;
-  font-size: 1.2rem; 
+  z-index: -1;
 }
 
 #flash {
@@ -22,10 +24,9 @@ canvas {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background-color: white;
   z-index: 1000;
-
   opacity: 0;
   pointer-events: none;
 }
@@ -33,7 +34,6 @@ canvas {
 #flash.active {
   opacity: 1;
   pointer-events: auto;
-
   transition: opacity 2.5s ease-in;
 }
 
@@ -46,7 +46,7 @@ canvas {
 
   /* Dimensions */
   width: 90vw;
-  height: 90vh;
+  height: 90dvh;
   z-index: 100;
   pointer-events: none;
 }
@@ -59,22 +59,21 @@ canvas {
   opacity: 0.25;
   padding: 15px 32px;
   text-align: center;
-  text-decoration: none;
   font-size: 16px;
-  margin: 4px 2px;  
   border: none;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 #open {
-  bottom: 5vh;
+  bottom: 5dvh;
   left: 50%;
   transform: translateX(-50%);
 }
 
 #close {
   display: none;
-  top: 5vh;
+  top: 5dvh;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -83,133 +82,106 @@ canvas {
 .slider-container {
   position: absolute;
   display: none;
-  top: 20.5vh;
+  top: 20dvh;
   left: 50vw;
   transform: translateX(-50%);
   z-index: 900;
+  width: 80vw; 
+  max-width: 400px; 
 }
 
 .slider {
   appearance: none;
-  width: 19vw; 
+  width: 100%; 
   background-color: white;
   opacity: 0.50;
   outline: none;
+  height: 10px;
+  border-radius: 5px;
 }
 
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none; 
-  appearance: none;
-  width: 19px; 
-  height: 2vh; 
+  -webkit-appearance: none;
+  width: 25px;
+  height: 25px;
   background: green; /* Green background */
-  opacity: 1;
-  cursor: pointer; /* Cursor on hover */
-}
-
-.slider::-moz-range-thumb {
-  width: 19vw; 
-  height: 2vh; 
-  background: green; /* Green background */
-  opacity: 1;
+  border-radius: 50%;
   cursor: pointer; /* Cursor on hover */
 }
 
 /* CARDS PAGE */
 .cards img {
-  position: relative;
+  position: absolute; 
   pointer-events: none;
   display: none;
   opacity: 0;
-
-  top: 12vh;
+  top: 15dvh;
   left: 50vw;
-  width: 28vw;
+  width: 85vw; 
+  max-width: 400px; 
   transform: translateX(-50%);
 }
 
-/* The Animation Class */
+/* ANIMATION EFFECTS */
 .slide-in {
-    display: block !important;
-    animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    pointer-events: auto;
+  display: block !important;
+  animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  pointer-events: auto;
+}
+
+.slide-out {
+  display: block !important;
+  animation: slideOut 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  pointer-events: auto;
 }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        /* Start 100% of the viewport width to the right */
-        transform: translateX(100vw); 
-    }
-    to {
-        opacity: 1;
-        /* End at the horizontal center (offset by its own 50% width) */
-        transform: translateX(-50%);
-    }
-}
-
-.swipe-right {
-  /* placement/size */
-  position: absolute;
-  pointer-events: auto;
-  top: 50vh;
-  left: 68vw;
-  width: 10vw;
-  height: 15vh; 
-  transform: translateY(-50%);
-
-  /* style/decoration */
-  color: white;
-  background-color: grey;
-  opacity: 0.25;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  margin: 4px 2px;   
-  border: none;
-  cursor: pointer;
-}
-
-.swipe-left {
-  /* placement/size */
-  position: absolute;
-  pointer-events: auto;
-  top: 50vh;
-  left: 22vw;
-  width: 10vw;
-  height: 15vh; 
-  transform: translateY(-50%);
-
-  /* style/decoration */
-  color: white;
-  background-color: grey;
-  opacity: 0.25;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  margin: 4px 2px;   
-  border: none;
-  cursor: pointer;
-}
-
-/* The Animation Class */
-.slide-out {
-    display: block !important;
-    animation: slideOut 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    pointer-events: auto;
+  from { opacity: 0; transform: translateX(100vw); }
+  to { opacity: 1; transform: translateX(-50%); }
 }
 
 @keyframes slideOut {
-    from {
-        opacity: 0;
-        /* Start 100% of the viewport width to the right */
-        transform: translateX(-150vw); 
-    }
-    to {
-        opacity: 1;
-        /* End at the horizontal center (offset by its own 50% width) */
-        transform: translateX(-50%);
-    }
+  from { opacity: 0; transform: translateX(-150vw); }
+  to { opacity: 1; transform: translateX(-50%); }
+}
+
+.swipe-right, .swipe-left {
+  position: fixed;
+  top: auto;
+  bottom: 10dvh; 
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: grey;
+  color: white;
+  opacity: 0.4;
+  border: none;
+  cursor: pointer;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.swipe-left { left: 10vw; }
+.swipe-right { right: 10vw; }
+
+@media (min-width: 1024px) {
+  .cards img {
+    width: 28vw;
+    top: 12vh;
+  }
+
+  .swipe-left, .swipe-right {
+    top: 50vh;
+    bottom: auto;
+    transform: translateY(-50%);
+    width: 10vw;
+    height: 15vh;
+    border-radius: 0;
+  }
+
+  .swipe-left { left: 22vw; }
+  .swipe-right { right: 22vw; }
 }
