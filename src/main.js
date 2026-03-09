@@ -3,6 +3,15 @@ import './style.css'
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/Addons.js';
 
+// Buttons Logic
+const openBtn = document.querySelector('#open');
+const closeBtn = document.querySelector('#close');
+
+// Slider Logic
+const flash = document.getElementById('flash');
+const slider = document.querySelector('.slider-container');
+var value = document.getElementById('range');
+
 // Store Mouse Position
 const mouse = {
   isDragging: false,
@@ -50,8 +59,6 @@ window.addEventListener('pointerup', () => {
 });
 
 // Initialize Buttons
-const openBtn = document.querySelector('#open');
-const closeBtn = document.querySelector('#close');
 let openPressed = false;
 
 // Button Listeners
@@ -114,11 +121,6 @@ loader.load('/TCGP.glb', function(glb) {
 const light = new THREE.DirectionalLight(0xffffff, 2.5);
 light.position.set(2, 3, 5);
 scene.add(light);
-
-// Slider Logic
-const flash = document.getElementById('flash');
-const slider = document.querySelector('.slider-container');
-var value = document.getElementById('range');
 
 let id;
 value.oninput =

@@ -26,7 +26,7 @@ canvas {
   width: 100vw;
   height: 100dvh;
   background-color: white;
-  z-index: 1000;
+  z-index: 101;
   opacity: 0;
   pointer-events: none;
 }
@@ -62,7 +62,6 @@ canvas {
   font-size: 16px;
   border: none;
   cursor: pointer;
-  border-radius: 8px;
 }
 
 #open {
@@ -164,6 +163,18 @@ canvas {
   font-size: 24px;
 }
 
+#darken {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: black;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .swipe-left { left: 10vw; }
 .swipe-right { right: 10vw; }
 
@@ -184,4 +195,43 @@ canvas {
 
   .swipe-left { left: 22vw; }
   .swipe-right { right: 22vw; }
+}
+
+#message {
+  position: fixed;
+  z-index: 1001; 
+  pointer-events: none;
+  opacity: 0;    
+  font-weight: bold;
+  color: #fff;
+  font-size: 48px;
+  font-family: "Courier New"; 
+  width: 40vw;
+}
+
+#flower {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1001; 
+  opacity: 0;    
+  left: 80dvw;
+  top: 20dvh;
+}
+
+#darken.active {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 2.5s ease-in;
+}
+
+#message.active1 {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 2.5s ease-in;
+} 
+
+#flower.active2 {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 5s ease-in;
 }
