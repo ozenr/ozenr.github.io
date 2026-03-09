@@ -54,18 +54,13 @@ const openBtn = document.querySelector('#open');
 const closeBtn = document.querySelector('#close');
 let openPressed = false;
 
-// Initialize Slider
-const flash = document.getElementById('flash');
-const slider = document.querySelector('.slider-container');
-var value = document.getElementById('range');
-
 // Button Listeners
 openBtn.addEventListener('click', () => {
   openBtn.style.display = 'none';
   openPressed = true;
 
   // reset original slider value
-  value.value = 50;
+  value.value = 0;
   closeBtn.style.display = 'block';
 });
 
@@ -79,6 +74,20 @@ closeBtn.addEventListener('click', () => {
   camera.position.setZ(30);  // reset camera position
 })
 
+// Slider Logic 
+const flash = document.getElementById('flash');
+const slider = document.querySelector('.slider-container');
+var value = document.getElementById('range');
+
+value.oninput = function() {
+  console.log(this.value)
+  if (Number(this.value) === 100) {
+    // Queue Flash Effect
+    flash.classList.add('active');
+
+    // Unrender Everything
+  }
+}
 // ------------------------Scene Setup------------------------
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -139,8 +148,6 @@ function animate() {
       pack.current_rotation = defaultOrientation;
       pack.target_rotation = defaultOrientation;
       slider.style.display = 'block';  // display slider after pack resets
-
-      
     }
   } else {
     // If We Haven't Slowed Down Enough
