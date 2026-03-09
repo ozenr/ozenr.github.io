@@ -3,6 +3,8 @@
   box-sizing: border-box;
 }
 
+/* SCENE AND PACK BUTTONS */
+
 canvas {
   position: fixed;
   top: 0;
@@ -111,4 +113,13 @@ canvas {
   background: green; /* Green background */
   opacity: 1;
   cursor: pointer; /* Cursor on hover */
+}
+
+/* CARDS PAGE */
+.card img {
+  position: absolute;
+  top: 12vh;
+  left: 50vw;
+  width: 28vw;
+  transform: translateX(-50%);
 }
