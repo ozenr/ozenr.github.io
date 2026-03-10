@@ -165,7 +165,8 @@ function animate() {
       packModel.rotation.y = pack.current_rotation;
 
     } else {
-      mouse.delta_X = 0;
+      packModel.rotation.y += 0.008;
+      // mouse.delta_X = 0.05;
     }
   }
   renderer.render(scene, camera);
